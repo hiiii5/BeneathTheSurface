@@ -1,3 +1,5 @@
+import java.awt.Point;
+
 
 public class Logic
 {
@@ -33,11 +35,30 @@ public class Logic
 	 * @param objectsInWorld Array of objects in view
 	 * @return Whether or not the object is colliding
 	 */
+	public static int checkCollision(Point pt1, Point pt2)
+	{
+		for(int i=0; i<Level.objectsInWorld.length; i++)
+			if(Level.objectsInWorld[i].getCollide())
+				if(Level.objectsInWorld[i].contains(pt1) || Level.objectsInWorld[i].contains(pt2))
+					return i;
+
+		return -1;
+	}
+	
+	/**
+	 * 
+	 * @param x Location to start from in x
+	 * @param y Location  to start from in y
+	 * @param width Width of the object
+	 * @param height Height of the object
+	 * @param objectsInWorld Array of objects in view
+	 * @return Whether or not the object is colliding
+	 */
 	public static int checkCollision(int x, int y, int width, int height, Object[] objs)
 	{
 		for( int i=0; i<objs.length; i++ )
 			if( objs[i].getCollide() == true )
-				if( x < objs[i].getX() + objs[i].getWidth() && y < objs[i].getY() + objs[i].getHeight() && x + width > objs[i].getX() && y + height> objs[i].getY() )
+				if(objs[i].contains(new Point(x, y)) || objs[i].contains(new Point(x+width, y)))
 					return i;
 
 		return -1;
@@ -47,12 +68,12 @@ public class Logic
 	 * 
 	 * @param objectsInWorld All the objects in the screen
 	 */
-	public void applyGravity(Object[] objectsInWorld)
+	public void applyGravity(Object[] objs)
 	{
-		for( Object obj : objectsInWorld )
-			if( obj.getGravity() )
-				if( checkCollision(obj.getX(), obj.getY(), obj.getWidth(), obj.getHeight(), objectsInWorld) == -1)
-					obj.setY(obj.getY()+gravity);
+		for( int i=0; i<objs.length; i++ )
+			if( objs[i].getGravity() )
+				if( checkCollision((int)objs[i].getX(), (int)objs[i].getY(), (int)objs[i].getWidth(), (int)objs[i].getHeight(), objs) == -1)
+					objs[i].setY((int)objs[i].getY()+gravity);
 	}
 	
 	/**

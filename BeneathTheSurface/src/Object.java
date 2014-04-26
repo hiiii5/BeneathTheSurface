@@ -1,10 +1,12 @@
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.io.File;
 
 import javax.imageio.ImageIO;
 
-public class Object
+@SuppressWarnings("serial")
+public class Object extends Rectangle
 {
 	private int x, y, width, height;
 	private boolean canCollide, isAffectedByGravity;
@@ -13,6 +15,7 @@ public class Object
 	
 	public Object(int x, int y, int width, int height, boolean canCollide, boolean isAffectedByGravity, String imageName)
 	{
+		setBounds(new Rectangle(x, y, width, height));
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -24,13 +27,13 @@ public class Object
 		setImage();
 	}
 	
-	public int getX() { return this.x; }
+	public double getX() { return this.x; }
 	public void setX(int x) { this.x = x; }
-	public int getY() { return this.y; }
+	public double getY() { return this.y; }
 	public void setY(int y) { this.y = y; }
-	public int getWidth() { return this.width; }
+	public double getWidth() { return this.width; }
 	public void setWidth(int width) { this.width = width; }
-	public int getHeight() { return this.height; }
+	public double getHeight() { return this.height; }
 	public void setHeight(int height) { this.height = height; }
 	public boolean getCollide() { return this.canCollide; }
 	public void setCollide(boolean canCollide) { this.canCollide = canCollide; }

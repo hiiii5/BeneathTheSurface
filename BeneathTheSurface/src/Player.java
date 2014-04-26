@@ -1,5 +1,6 @@
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.io.File;
 
 import javax.imageio.ImageIO;
@@ -27,7 +28,7 @@ public class Player extends Character
 		this.defense = 0;
 		this.attack = 0;
 		
-		setImage();
+		setImage(0);
 	}
 	
 	//Primary Creation
@@ -48,7 +49,7 @@ public class Player extends Character
 		this.defense = (int)(hp/2);
 		this.attack = (int)Math.sqrt(defense*3);
 		
-		setImage();
+		setImage(0);
 	}
 	
 	/**
@@ -114,42 +115,44 @@ public class Player extends Character
 	 */
 	public void setAttack(int a) { this.attack = a; }
 	
-	private void setImage()
+	private void setImage(int frame)
 	{
-		try { this.image = ImageIO.read(new File("Img/Player.png")); }
-		catch(Exception e) { e.printStackTrace(); }
-	}
-	
-	public void jump()
-	{
-		if(this.isJumping == false)
+		if(frame == 0)
 		{
-			this.dy = -10;
-			this.isJumping = true;
+			try { this.image = ImageIO.read(new File("Img/Player.png")); }
+			catch(Exception e) { e.printStackTrace(); }
+		}
+		if(frame == -1)
+		{
+			try { this.image = ImageIO.read(new File("Img/Player_backward.png")); }
+			catch(Exception e) { e.printStackTrace(); }
+		}
+		if(frame == 1)
+		{
+			try { this.image = ImageIO.read(new File("Img/Player_forward.png")); }
+			catch(Exception e) { e.printStackTrace(); }
 		}
 	}
 	
 	public void update()
 	{
-		int collision = Logic.checkCollision(this.x, this.y, this.width, this.height, Level.objectsInWorld);
-		if(isJumping == true)
+		boolean canMove = true;
+		
+		if(this.dx == 0)
+			setImage(0);
+		if(this.dx == 1)
 		{
-			this.dy += Logic.getGravity();
-			this.y += dy;
-			
-			if(collision > -1)
-			{
-				this.dy = 0;
-				this.isJumping = false;
-				this.y = Level.objectsInWorld[collision].getY() - this.height;
-			}
+			canMove = (Logic.checkCollision(new Point(this.x+(this.width+1), this.y), new Point(this.x+(this.width+1), this.y+this.height)) > -1) ? true : false;
+			setImage(1);
+		}
+		if(this.dx == -1)
+		{
+			canMove = (Logic.checkCollision(new Point(this.x-1, this.y), new Point(this.x, this.y+this.height)) > -1) ? true : false;
+			setImage(-1);
 		}
 
-		this.x += this.dx;
-		if(collision == -1)
-		{
-			this.y += dy;
-		}
+		if(!canMove)
+			this.x += this.dx;
 	}
 	
 	public void render(Graphics2D g2)

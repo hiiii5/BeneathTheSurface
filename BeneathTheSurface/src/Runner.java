@@ -26,7 +26,7 @@ public class Runner extends JPanel implements KeyListener
 	public static final int FPS = 60/1000;
 	
 	public Level level = new Level();
-	public Player player = new Player(40, 100, 20, 60, 100);
+	public Player player = new Player(21, sHeight-126, 30, 70, 100);
 	
 	public Runner()
 	{
@@ -100,8 +100,6 @@ public class Runner extends JPanel implements KeyListener
 			break;
 			case KeyEvent.VK_A: player.dx = -1;
 			break;
-			case KeyEvent.VK_SPACE: player.jump();
-			break;
 			default: System.out.println("Error, no key");
 		}
 	}
@@ -115,8 +113,6 @@ public class Runner extends JPanel implements KeyListener
 			case KeyEvent.VK_D: player.dx = 0;
 			break;
 			case KeyEvent.VK_A: player.dx = 0;
-			break;
-			case KeyEvent.VK_SPACE: /*do nothing*/;
 			break;
 			default: System.out.println("Error, no key");
 		}
